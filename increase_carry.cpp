@@ -1,5 +1,4 @@
 #include "increase_carry.h"
-#include "debug.h"
 #include <iostream>
 
 using namespace std;
@@ -11,7 +10,11 @@ increase_carry::increase_carry(int digit){
 }
 
 increase_carry::increase_carry(vector<int> _num){
-    this->num.assign(_num.begin(), _num.begin());
+    this->num.assign(_num.begin(), _num.end());
+    #ifdef DEBUG
+        cout << "Init by vector." << endl;
+        this->print_num();
+    #endif
     this->num.push_back(0);
 }
 
@@ -74,5 +77,15 @@ void increase_carry::print_num(){
 vector<int> increase_carry::get_num(){
     vector<int> res = this->num;
     res.pop_back();
+    return res;
+}
+
+vector<int> increase_carry::dec2increase(int dec){
+    vector<int> res;
+    int t = 2;
+    while(dec > 0){
+        res.push_back(dec % t);
+        dec /= t++;
+    }
     return res;
 }

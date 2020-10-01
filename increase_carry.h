@@ -2,6 +2,7 @@
 #define INCREASE_CARRT
 
 #include <vector>
+#include "debug.h"
 
 using namespace std;
 
@@ -19,6 +20,7 @@ public:
     bool pre();
     vector<int> get_num();
     void print_num();
+    vector<int> dec2increase(int dec);
 };
 
 #endif
