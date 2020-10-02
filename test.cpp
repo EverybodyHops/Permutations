@@ -14,13 +14,18 @@ int main(){
     a.push_back(4);
     a.push_back(7);
     increase_carry test(a);
-    
+    /*
     for(int i = 0; i < 2020; i++){
-        test.pre();
+        if(!test.next()){
+            break;
+        }
     }
+    */
+
+    test.sub_dec(2020);
     test.print_num();
 
-    auto b = test.dec2increase(2020);
+    auto b = test.dec2increase(4444);
     print_vector<int>(b, true);
     print_vector<int>(b);
     /*

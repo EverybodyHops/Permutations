@@ -5,17 +5,41 @@ using namespace std;
 
 increase_carry::increase_carry(int digit){
     for(int i = 0; i <= digit; i++){
-        this->num.push_back(0);
+        num.push_back(0);
     }
 }
 
 increase_carry::increase_carry(vector<int> _num){
-    this->num.assign(_num.begin(), _num.end());
+    num.assign(_num.begin(), _num.end());
+    num.push_back(0);
     #ifdef DEBUG
         cout << "Init by vector." << endl;
-        this->print_num();
+        print_num();
     #endif
-    this->num.push_back(0);
+}
+
+vector<int> increase_carry::get_num(){
+    vector<int> res = num;
+    res.pop_back();
+    return res;
+}
+
+void increase_carry::print_num(){
+    cout << "now num: ";
+    for(int i = num.size() - 1; i >= 0; i--){
+        cout << num[i] << " ";
+    }
+    cout << endl;
+}
+
+vector<int> increase_carry::dec2increase(int dec){
+    vector<int> res;
+    int t = 2;
+    while(dec > 0){
+        res.push_back(dec % t);
+        dec /= t++;
+    }
+    return res;
 }
 
 bool increase_carry::next(){
@@ -31,12 +55,12 @@ bool increase_carry::next(){
     if(num[num.size() - 1] > 0){
         #ifdef DEBUG
             cout << "Overflow!" << endl;
-            this->print_num();
+            print_num();
         #endif
-        this->pre();
+        pre();
         #ifdef DEBUG
             cout << "After handle overflow." << endl;
-            this->print_num();
+            print_num();
         #endif
         return false;
     }
@@ -55,37 +79,79 @@ bool increase_carry::pre(){
     if(num[num.size() - 1] < 0){
         #ifdef DEBUG
             cout << "Underflow!" << endl;
-            this->print_num();
+            print_num();
         #endif
-        this->next();
+        next();
         #ifdef DEBUG
             cout << "After handle unferflow." << endl;
-            this->print_num();
+            print_num();
         #endif
         return false;
     }
 }
 
-void increase_carry::print_num(){
-    cout << "now num: ";
-    for(int i = num.size() - 1; i >= 0; i--){
-        cout << num[i] << " ";
+bool increase_carry::add_vector(vector<int> v){
+    if(v.size() >= num.size()){
+        return false;
     }
-    cout << endl;
+
+    for(int i = 0; i < num.size() - 1; i++){
+        if(i < v.size()){  
+            num[i] += v[i];
+        }
+        if(num[i] >= i + 2){
+            num[i] -= i + 2;
+            num[i + 1] += 1;
+        }
+    }
+
+    if(num[num.size() - 1] > 0){
+        #ifdef DEBUG
+            cout << "Overflow!" << endl;
+            print_num();
+        #endif
+        sub_vector(v);
+        #ifdef DEBUG
+            cout << "After handle overflow." << endl;
+            print_num();
+        #endif
+        return false;
+    }
 }
 
-vector<int> increase_carry::get_num(){
-    vector<int> res = this->num;
-    res.pop_back();
-    return res;
+bool increase_carry::add_dec(int dec){
+    return add_vector(dec2increase(dec));
 }
 
-vector<int> increase_carry::dec2increase(int dec){
-    vector<int> res;
-    int t = 2;
-    while(dec > 0){
-        res.push_back(dec % t);
-        dec /= t++;
+bool increase_carry::sub_vector(vector<int> v){
+    if(v.size() >= num.size()){
+        return false;
     }
-    return res;
+
+    for(int i = 0; i < num.size() - 1; i++){
+        if(i < v.size()){  
+            num[i] -= v[i];
+        }
+        if(num[i] < 0){
+            num[i] += i + 2;
+            num[i + 1] -= 1;
+        }
+    }
+
+    if(num[num.size() - 1] > 0){
+        #ifdef DEBUG
+            cout << "Underflow!" << endl;
+            print_num();
+        #endif
+        add_vector(v);
+        #ifdef DEBUG
+            cout << "After handle unferflow." << endl;
+            print_num();
+        #endif
+        return false;
+    }
+}
+
+bool increase_carry::sub_dec(int dec){
+    return sub_vector(dec2increase(dec));
 }

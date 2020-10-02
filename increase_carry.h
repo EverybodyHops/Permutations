@@ -16,11 +16,17 @@ public:
     increase_carry() = delete;
     increase_carry(int digit);
     increase_carry(vector<int> _num);
-    bool next();
-    bool pre();
+
     vector<int> get_num();
     void print_num();
     vector<int> dec2increase(int dec);
+
+    bool next();
+    bool pre();
+    bool add_vector(vector<int> v);
+    bool add_dec(int dec);
+    bool sub_vector(vector<int> v);
+    bool sub_dec(int dec);
 };
 
 #endif
