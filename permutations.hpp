@@ -87,6 +87,8 @@ public:
         }
 
         vector<int> m_num = this->media_num->get_num();
+        m_num.insert(m_num.begin(), 0);
+        
         vector<T> res;
         int temp;
         for(int i = m_num.size() - 1; i >= 0; i--){
@@ -101,12 +103,6 @@ public:
                         temp -= 1;
                     }
                 }
-            }
-        }
-        for(int i = 0; i < len; i++){
-            if(can_use[i]){
-                res.push_back(this->ordered_element[i]);
-                break;
             }
         }
         delete[] can_use;
@@ -153,6 +149,8 @@ public:
         }
 
         vector<int> m_num = this->media_num->get_num();
+        m_num.insert(m_num.begin(), 0);
+
         vector<T> res(len);
         int temp;
         for(int i = m_num.size() - 1; i >= 0; i--){
@@ -160,19 +158,13 @@ public:
             for(int j = 0; j < len; j++){
                 if(can_put[j]){
                     if(temp == 0){
-                        res[j] = this->ordered_element[i + 1];
+                        res[j] = this->ordered_element[i];
                         can_put[j] = false;
                         break; 
                     }else{
                         temp -= 1;
                     }
                 }
-            }
-        }
-        for(int i = 0; i < len; i++){
-            if(can_put[i]){
-                res[i] = this->ordered_element[0];
-                break;
             }
         }
         delete[] can_put;
