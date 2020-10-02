@@ -1,6 +1,21 @@
-#include "increase_carry.h"
+#include "media_number.h"
 
 using namespace std;
+
+vector<int> media_number::get_num(){
+    vector<int> res = num;
+    res.pop_back();
+    return res;
+}
+
+void media_number::print_num(){
+    cout << "now num: ";
+    for(int i = num.size() - 1; i >= 0; i--){
+        cout << num[i] << " ";
+    }
+    cout << endl;
+}
+
 
 increase_carry::increase_carry(int digit){
     for(int i = 0; i <= digit; i++){
@@ -17,21 +32,7 @@ increase_carry::increase_carry(vector<int> _num){
     #endif
 }
 
-vector<int> increase_carry::get_num(){
-    vector<int> res = num;
-    res.pop_back();
-    return res;
-}
-
-void increase_carry::print_num(){
-    cout << "now num: ";
-    for(int i = num.size() - 1; i >= 0; i--){
-        cout << num[i] << " ";
-    }
-    cout << endl;
-}
-
-vector<int> increase_carry::dec2increase(int dec){
+vector<int> increase_carry::dec2media(int dec){
     vector<int> res;
     int t = 2;
     while(dec > 0){
@@ -119,7 +120,7 @@ bool increase_carry::add_vector(vector<int> v){
 }
 
 bool increase_carry::add_dec(int dec){
-    return add_vector(dec2increase(dec));
+    return add_vector(dec2media(dec));
 }
 
 bool increase_carry::sub_vector(vector<int> v){
@@ -152,5 +153,5 @@ bool increase_carry::sub_vector(vector<int> v){
 }
 
 bool increase_carry::sub_dec(int dec){
-    return sub_vector(dec2increase(dec));
+    return sub_vector(dec2media(dec));
 }
