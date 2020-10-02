@@ -8,6 +8,12 @@ vector<int> media_number::get_num(){
     return res;
 }
 
+void media_number::reset(){
+    for(int i = 0; i < num.size(); i++){
+        num[i] = 0;
+    }
+}
+
 void media_number::print_num(){
     cout << "now num: ";
     for(int i = num.size() - 1; i >= 0; i--){

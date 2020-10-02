@@ -12,6 +12,7 @@ protected:
     vector<int> num;
 public:
     vector<int> get_num();
+    void reset();
     void print_num();
 
     virtual vector<int> dec2media(int dec) = 0;
