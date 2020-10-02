@@ -1,5 +1,4 @@
 #include "increase_carry.h"
-#include <iostream>
 
 using namespace std;
 

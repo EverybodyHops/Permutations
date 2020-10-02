@@ -1,7 +1,8 @@
 #ifndef INCREASE_CARRY
-#define INCREASE_CARRT
+#define INCREASE_CARRY
 
 #include <vector>
+#include <iostream>
 #include "debug.h"
 
 using namespace std;
