@@ -246,4 +246,90 @@ public:
     }
 };
 
+template <typename T>
+class ortho_transposition: public permutations<T>{
+private:
+    int start[2], end[2], step[2];
+
+public:
+    ortho_transposition() = delete;
+
+    ortho_transposition(vector<T> init_per){
+        this->ordered_element = init_per;
+        sort(this->ordered_element.begin(), this->ordered_element.end());
+
+        //permutation to media number
+        vector<int> t;
+        int temp, direct;
+
+        // 1 is right, 0 is left
+        direct = 0;
+        start[0] = init_per.size() - 1; end[0] = -1; step[0] = -1;
+        start[1] = 0; end[1] = init_per.size(); step[1] = 1;
+        
+        for(int i = 1; i < this->ordered_element.size(); i++){
+            temp = 0;
+            for(int j = start[direct]; j != end[direct]; j += step[direct]){
+                if(init_per[j] < this->ordered_element[i]){
+                    temp += 1;
+                }
+                if(init_per[j] == this->ordered_element[i]){
+                    break;
+                }
+            }
+            t.push_back(temp);
+            if(i % 2 == 1){
+                direct = t[i - 1] % 2;
+            }else{
+                direct = (t[i - 1] + t[i - 2]) % 2;
+            }
+        }
+        reverse(t.begin(), t.end());
+        this->media_num = new decrease_carry(t);
+
+        #ifdef DEBUG
+            this->media_num->print_num();
+        #endif
+    }
+
+    vector<T> get_permutation() override{
+        int len = this->ordered_element.size();
+        bool *can_put = new bool[len];
+        for(int i = 0; i < this->ordered_element.size(); i++){
+            can_put[i] = true;
+        }
+
+        vector<int> m_num = this->media_num->get_num();
+        m_num.push_back(0);
+        m_num.push_back(0);
+        vector<int> carry = this->media_num->get_carry();
+        carry.push_back(1);
+
+        vector<T> res(len);
+        int direct, temp;
+        for(int i = 0; i < this->ordered_element.size(); i++){
+            temp = m_num[i];
+            if(carry[i] % 2 == 0){
+                direct = (m_num[i + 1] + m_num[i + 2]) % 2;
+            }else{
+                direct = m_num[i + 1] % 2;
+            }
+            for(int j = start[direct]; j != end[direct]; j += step[direct]){
+                if(can_put[j]){
+                    if(temp == 0){
+                        res[j] = this->ordered_element[this->ordered_element.size() - 1 - i];
+                        can_put[j] = false;
+                        break; 
+                    }else{
+                        temp -= 1;
+                    }
+                }
+            }
+        }
+
+        delete[] can_put;
+        return res;
+    }
+};
+
 #endif

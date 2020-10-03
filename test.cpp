@@ -7,6 +7,7 @@ using namespace std;
 
 int main(){
     vector<int> now_per = {8,3,6,7,4,5,2,1};
+    //vector<int> now_per = {1,2,3,4,5,6,7,8};
     dic_order<int> a(now_per);
     a.print_media_carry();
     a.pre_n(2020);
@@ -34,16 +35,24 @@ int main(){
     c.print_media_num();
     print_vector<int>(c.get_permutation());
 
-    /*
-    vector<char> cp = {'a','b', 'c'};
-    dic_order<char> c(cp);
+    ortho_transposition<int> d(now_per);
+    d.print_media_carry();
+    d.pre_n(2020);
+    d.print_media_num();
+    print_vector<int>(d.get_permutation());
+    d.next_n(2020);
+    d.print_media_num();
+    print_vector<int>(d.get_permutation());
+    
+    vector<char> cp = {'a', 'b', 'c', 'd'};
+    ortho_transposition<char> e(cp);
+    print_vector<char>(e.get_permutation());
     int t = 1;
-    while(c.next_one())
+    while(e.next_one())
     {
-        c.print_media_num();
-        print_vector<char>(c.get_permutation());
+        //e.print_media_num();
+        print_vector<char>(e.get_permutation());
         t += 1;
     }
     cout << t << endl;
-    */
 }
