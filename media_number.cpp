@@ -113,7 +113,7 @@ bool media_number::sub_vector(vector<int> v){
         }
     }
 
-    if(num[num.size() - 1] > 0){
+    if(num[num.size() - 1] < 0){
         #ifdef DEBUG
             cout << "Underflow!" << endl;
             print_num();
