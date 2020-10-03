@@ -8,26 +8,41 @@ using namespace std;
 int main(){
     vector<int> now_per = {8,3,6,7,4,5,2,1};
     dic_order<int> a(now_per);
-    //print_vector<int>(a.get_media_num(), true);
+    a.print_media_carry();
     a.pre_n(2020);
-    //print_vector<int>(a.get_media_num(), true);
+    a.print_media_num();
+    print_vector<int>(a.get_permutation());
+    a.next_n(2020);
+    a.print_media_num();
     print_vector<int>(a.get_permutation());
 
     increase_carry_order<int> b(now_per);
-    //print_vector<int>(b.get_media_num(), true);
-    //print_vector<int>(b.get_permutation());
+    b.print_media_carry();
     b.pre_n(2020);
-    //print_vector<int>(b.get_media_num(), true);
+    b.print_media_num();
+    print_vector<int>(b.get_permutation());
+    b.next_n(2020);
+    b.print_media_num();
     print_vector<int>(b.get_permutation());
 
-    vector<char> cp = {'a','b', 'c', 'd'};
+    /*
+    vector<char> cp = {'a','b', 'c'};
     dic_order<char> c(cp);
     int t = 1;
     while(c.next_one())
     {
-        //print_vector<int>(c.get_media_num(), true);
+        c.print_media_num();
         print_vector<char>(c.get_permutation());
         t += 1;
     }
-    cout << t;
+    cout << t << endl;
+    */
+
+    vector<int> v = {0,2,1,2,1,0,1};
+    media_number *dn = new decrease_carry(v);
+    dn->print_num();
+    dn->print_carry();
+    dn->sub_dec(2020);
+    dn->print_num();
+    print_vector<int>(dn->dec2media(2020));
 }

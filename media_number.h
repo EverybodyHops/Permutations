@@ -8,39 +8,41 @@
 using namespace std;
 
 class media_number{
+    //num[0] is lowest
+    //num[digit - 1] is highest
+    //num[digit] is flag of overflow and underflow
 protected:
-    vector<int> num;
+    vector<int> num, carry;
 public:
     vector<int> get_num();
-    void reset();
+    vector<int> get_carry();
     void print_num();
+    void print_carry();
+    void reset();
 
-    virtual vector<int> dec2media(int dec) = 0;
-    virtual bool next() = 0;
-    virtual bool pre() = 0;
-    virtual bool add_vector(vector<int> v) = 0;
-    virtual bool add_dec(int dec) = 0;
-    virtual bool sub_vector(vector<int> v) = 0;
-    virtual bool sub_dec(int dec) = 0;
+    vector<int> dec2media(int dec);
+    bool if_vector_legal(vector<int> v);
+    bool add_vector(vector<int> v);
+    bool sub_vector(vector<int> v);
+    bool add_dec(int dec);
+    bool sub_dec(int dec);
+    bool next();
+    bool pre();
 };
 
 
 class increase_carry: public media_number{
-    //num[0] is lowest
-    //num[digit - 1] is highest
-    //num[digit] is flag of overflow
 public:
     increase_carry() = delete;
     increase_carry(int digit);
     increase_carry(vector<int> _num);
+};
 
-    vector<int> dec2media(int dec) override;
-    bool next() override;
-    bool pre() override;
-    bool add_vector(vector<int> v) override;
-    bool add_dec(int dec) override;
-    bool sub_vector(vector<int> v) override;
-    bool sub_dec(int dec) override;
+class decrease_carry: public media_number{
+public:
+    decrease_carry() = delete;
+    decrease_carry(int digit);
+    decrease_carry(vector<int> _num);
 };
 
 #endif

@@ -8,10 +8,9 @@ vector<int> media_number::get_num(){
     return res;
 }
 
-void media_number::reset(){
-    for(int i = 0; i < num.size(); i++){
-        num[i] = 0;
-    }
+vector<int> media_number::get_carry(){
+    vector<int> res = carry;
+    return res;
 }
 
 void media_number::print_num(){
@@ -22,82 +21,55 @@ void media_number::print_num(){
     cout << endl;
 }
 
+void media_number::print_carry(){
+    cout << "now carry: ";
+    for(int i = carry.size() - 1; i >= 0; i--){
+        cout << carry[i] << " ";
+    }
+    cout << endl;
+}
 
-increase_carry::increase_carry(int digit){
-    for(int i = 0; i <= digit; i++){
-        num.push_back(0);
+void media_number::reset(){
+    for(int i = 0; i < num.size(); i++){
+        num[i] = 0;
     }
 }
 
-increase_carry::increase_carry(vector<int> _num){
-    num.assign(_num.begin(), _num.end());
-    num.push_back(0);
-    #ifdef DEBUG
-        cout << "Init by vector." << endl;
-        print_num();
-    #endif
-}
-
-vector<int> increase_carry::dec2media(int dec){
+vector<int> media_number::dec2media(int dec){
     vector<int> res;
-    int t = 2;
+    int t = 0;
     while(dec > 0){
-        res.push_back(dec % t);
-        dec /= t++;
+        if(t == carry.size()){
+            res.push_back(dec);
+        }
+        res.push_back(dec % carry[t]);
+        dec /= carry[t++];
     }
     return res;
 }
 
-bool increase_carry::next(){
-    num[0] += 1;
-    for(int i = 0; i < num.size() - 1; i++){
-        if(num[i] == i + 2){
-            num[i] = 0;
-            num[i + 1] += 1;
-        }else{
-            return true;
-        }
-    }
-    if(num[num.size() - 1] > 0){
+bool media_number::if_vector_legal(vector<int> v){
+    if(v.size() > carry.size()){
         #ifdef DEBUG
-            cout << "Overflow!" << endl;
-            print_num();
-        #endif
-        pre();
-        #ifdef DEBUG
-            cout << "After handle overflow." << endl;
-            print_num();
+            cout << "Vector illegal (too long)!" << endl;
+            print_vector<int>(v);
         #endif
         return false;
     }
-}
-
-bool increase_carry::pre(){
-    num[0] -= 1;
-    for(int i = 0; i < num.size() - 1; i++){
-        if(num[i] == -1){
-            num[i] = i + 1;
-            num[i + 1] -= 1;
-        }else{
-            return true;
+    for(int i = 0; i < v.size(); i++){
+        if(v[i] >= carry[i]){
+            #ifdef DEBUG
+                cout << "Vector illegal (bigger than carry)!" << endl;
+                print_vector<int>(v);
+            #endif
+            return false;
         }
     }
-    if(num[num.size() - 1] < 0){
-        #ifdef DEBUG
-            cout << "Underflow!" << endl;
-            print_num();
-        #endif
-        next();
-        #ifdef DEBUG
-            cout << "After handle unferflow." << endl;
-            print_num();
-        #endif
-        return false;
-    }
+    return true;
 }
 
-bool increase_carry::add_vector(vector<int> v){
-    if(v.size() >= num.size()){
+bool media_number::add_vector(vector<int> v){
+    if(!if_vector_legal(v)){
         return false;
     }
 
@@ -105,8 +77,8 @@ bool increase_carry::add_vector(vector<int> v){
         if(i < v.size()){  
             num[i] += v[i];
         }
-        if(num[i] >= i + 2){
-            num[i] -= i + 2;
+        if(num[i] >= carry[i]){
+            num[i] -= carry[i];
             num[i + 1] += 1;
         }
     }
@@ -123,14 +95,11 @@ bool increase_carry::add_vector(vector<int> v){
         #endif
         return false;
     }
+    return true;
 }
 
-bool increase_carry::add_dec(int dec){
-    return add_vector(dec2media(dec));
-}
-
-bool increase_carry::sub_vector(vector<int> v){
-    if(v.size() >= num.size()){
+bool media_number::sub_vector(vector<int> v){
+    if(!if_vector_legal(v)){
         return false;
     }
 
@@ -139,7 +108,7 @@ bool increase_carry::sub_vector(vector<int> v){
             num[i] -= v[i];
         }
         if(num[i] < 0){
-            num[i] += i + 2;
+            num[i] += carry[i];
             num[i + 1] -= 1;
         }
     }
@@ -156,8 +125,54 @@ bool increase_carry::sub_vector(vector<int> v){
         #endif
         return false;
     }
+
+    return true;
 }
 
-bool increase_carry::sub_dec(int dec){
+bool media_number::add_dec(int dec){
+    return add_vector(dec2media(dec));
+}
+
+bool media_number::sub_dec(int dec){
     return sub_vector(dec2media(dec));
+}
+
+bool media_number::next(){
+    return add_dec(1);
+}
+
+bool media_number::pre(){
+    return sub_dec(1);
+}
+
+increase_carry::increase_carry(int digit){
+    for(int i = 0; i < digit; i++){
+        num.push_back(0);
+        carry.push_back(i + 2);
+    }
+    num.push_back(0);
+}
+
+increase_carry::increase_carry(vector<int> _num){
+    num.assign(_num.begin(), _num.end());
+    for(int i = 0; i < num.size(); i++){
+        carry.push_back(i + 2);
+    }
+    num.push_back(0);
+}
+
+decrease_carry::decrease_carry(int digit){
+    for(int i = 0; i < digit; i++){
+        num.push_back(0);
+        carry.push_back(digit + 1 - i);
+    }
+    num.push_back(0);
+}
+
+decrease_carry::decrease_carry(vector<int> _num){
+    num.assign(_num.begin(), _num.end());
+    for(int i = 0; i < num.size(); i++){
+        carry.push_back(num.size() - i + 1);
+    }
+    num.push_back(0);
 }

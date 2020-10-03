@@ -46,6 +46,14 @@ public:
         return media_num->get_num();
     }
     
+    void print_media_num(){
+        media_num->print_num();
+    }
+
+    void print_media_carry(){
+        media_num->print_carry();
+    }
+
     virtual vector<T> get_permutation() = 0;
 };
 
