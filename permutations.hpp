@@ -180,4 +180,70 @@ public:
         return res;
     }
 };
+
+template <typename T>
+class decrease_carry_order: public permutations<T>{
+public:
+    decrease_carry_order() = delete;
+
+    decrease_carry_order(vector<T> init_per){
+        this->ordered_element = init_per;
+        sort(this->ordered_element.begin(), this->ordered_element.end());
+
+        //permutation to media number
+        vector<int> t;
+        int temp;
+        for(int i = 1; i < this->ordered_element.size(); i++){
+            temp = 0;
+            for(int j = init_per.size() - 1; j >= 0; j--){
+                if(init_per[j] < this->ordered_element[i]){
+                    temp += 1;
+                }
+                if(init_per[j] == this->ordered_element[i]){
+                    break;
+                }
+            }
+            t.push_back(temp);
+        }
+        reverse(t.begin(), t.end());
+        this->media_num = new decrease_carry(t);
+
+        #ifdef DEBUG
+            this->media_num->print_num();
+        #endif
+    }
+
+    vector<T> get_permutation() override{
+        int len = this->ordered_element.size();
+        bool *can_put = new bool[len];
+        for(int i = 0; i < this->ordered_element.size(); i++){
+            can_put[i] = true;
+        }
+
+        vector<int> m_num = this->media_num->get_num();
+        reverse(m_num.begin(), m_num.end());
+        m_num.insert(m_num.begin(), 0);
+        
+        vector<T> res(len);
+        int temp;
+        for(int i = m_num.size() - 1; i >= 0; i--){
+            temp = m_num[i];
+            for(int j = 0; j < len; j++){
+                if(can_put[j]){
+                    if(temp == 0){
+                        res[j] = this->ordered_element[i];
+                        can_put[j] = false;
+                        break; 
+                    }else{
+                        temp -= 1;
+                    }
+                }
+            }
+        }
+        delete[] can_put;
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
+
 #endif

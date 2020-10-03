@@ -25,6 +25,15 @@ int main(){
     b.print_media_num();
     print_vector<int>(b.get_permutation());
 
+    decrease_carry_order<int> c(now_per);
+    c.print_media_carry();
+    c.pre_n(2020);
+    c.print_media_num();
+    print_vector<int>(c.get_permutation());
+    c.next_n(2020);
+    c.print_media_num();
+    print_vector<int>(c.get_permutation());
+
     /*
     vector<char> cp = {'a','b', 'c'};
     dic_order<char> c(cp);
@@ -37,12 +46,4 @@ int main(){
     }
     cout << t << endl;
     */
-
-    vector<int> v = {0,2,1,2,1,0,1};
-    media_number *dn = new decrease_carry(v);
-    dn->print_num();
-    dn->print_carry();
-    dn->sub_dec(2020);
-    dn->print_num();
-    print_vector<int>(dn->dec2media(2020));
 }
