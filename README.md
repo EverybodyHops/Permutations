@@ -38,4 +38,5 @@ dic_order<int> a(now_per);
     * `vector<int> get_media_num()`：返回当前中介数，v[0]为最低位。
     * `void print_media_num()`：打印当前中位数。
     * `vector<T> get_permutation()`：返回当前中介数对应的排列。
+
 具体使用见`test.cpp`。
