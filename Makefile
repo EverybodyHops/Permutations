@@ -16,4 +16,4 @@ magic_square.o:magic_square.cpp permutations.hpp debug.h
 	g++ -c magic_square.cpp -o magic_square.o -std=c++11
 
 clean:
-	del *.o test.exe
+	del *.o *.exe
