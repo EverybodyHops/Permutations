@@ -41,6 +41,7 @@ vector<int> media_number::dec2media(int dec){
     while(dec > 0){
         if(t == carry.size()){
             res.push_back(dec);
+            break;
         }
         res.push_back(dec % carry[t]);
         dec /= carry[t++];
